@@ -8,4 +8,4 @@ To ensure that you are learning the concepts of the course, any code that you ad
 
 # name of user
 
-My name is Ebenezer john
+My name is Ebenezer John
