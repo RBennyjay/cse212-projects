@@ -10,7 +10,6 @@
         queue.Enqueue(100);
         var value = queue.Dequeue();
         Console.WriteLine(value);
-        // Defect(s) Found:
 
         Console.WriteLine("------------");
 
@@ -28,7 +27,6 @@
         Console.WriteLine(value);
         value = queue.Dequeue();
         Console.WriteLine(value);
-        // Defect(s) Found: 
 
         Console.WriteLine("------------");
 
@@ -37,37 +35,39 @@
         // Expected Result: An exception should be raised
         Console.WriteLine("Test 3");
         queue = new SimpleQueue();
-        try {
+        try
+        {
             queue.Dequeue();
             Console.WriteLine("Oops ... This shouldn't have worked.");
         }
-        catch (IndexOutOfRangeException) {
+        catch (IndexOutOfRangeException)
+        {
             Console.WriteLine("I got the exception as expected.");
         }
-        // Defect(s) Found: 
     }
 
     private readonly List<int> _queue = new();
 
     /// <summary>
-    /// Enqueue the value provided into the queue
+    /// Enqueue the value provided into the queue (adds to the back)
     /// </summary>
-    /// <param name="value">Integer value to add to the queue</param>
-    private void Enqueue(int value) {
-        _queue.Insert(0, value);
+    private void Enqueue(int value)
+    {
+        _queue.Add(value);              // <-- put new items at the end (back) of the queue
     }
 
     /// <summary>
-    /// Dequeue the next value and return it
+    /// Dequeue the next value and return it (remove from the front)
     /// </summary>
     /// <exception cref="IndexOutOfRangeException">If queue is empty</exception>
     /// <returns>First integer in the queue</returns>
-    private int Dequeue() {
-        if (_queue.Count <= 0)
-            throw new IndexOutOfRangeException();
+    private int Dequeue()
+    {
+        if (_queue.Count == 0)
+            throw new IndexOutOfRangeException();    // requirement: throw this exception when empty
 
-        var value = _queue[1];
-        _queue.RemoveAt(1);
+        var value = _queue[0];         // <-- read the front
+        _queue.RemoveAt(0);            // <-- then remove the front
         return value;
     }
 }
