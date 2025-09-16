@@ -36,27 +36,28 @@ public class TakingTurnsQueue
             throw new InvalidOperationException("No one in the queue.");
         }
 
+        // Get the next person from the queue
         Person person = _people.Dequeue();
 
-        // Decrement turns for finite-turn players
+        // Check for infinite turns (less than or equal to 0).
+        // The "Forever" tests use negative numbers, so we should check for <= 0.
         if (person.Turns > 0)
         {
+            // Decrement turns for finite-turn players
             person.Turns--;
-        }
 
-        // Re-enqueue the person if they still have turns left (or infinite turns)
-        if (person.Turns != 0)
+            // Only re-enqueue if turns are still greater than 0
+            if (person.Turns > 0)
+            {
+                _people.Enqueue(person);
+            }
+        }
+        else
         {
+            // If turns are 0 or less (infinite), always re-enqueue.
             _people.Enqueue(person);
         }
 
         return person;
     }
 }
-
-
-//     public override string ToString()
-//     {
-//         return _people.ToString();
-//     }
-// }
