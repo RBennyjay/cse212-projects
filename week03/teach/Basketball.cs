@@ -17,20 +17,31 @@ public class Basketball
 {
     public static void Run()
     {
-        var players = new Dictionary<string, int>();
+        var totals = new Dictionary<string, int>();
 
         using var reader = new TextFieldParser("basketball.csv");
         reader.TextFieldType = FieldType.Delimited;
         reader.SetDelimiters(",");
-        reader.ReadFields(); // ignore header row
-        while (!reader.EndOfData) {
+        reader.ReadFields(); // skip header
+
+        while (!reader.EndOfData)
+        {
             var fields = reader.ReadFields()!;
             var playerId = fields[0];
             var points = int.Parse(fields[8]);
+
+            if (totals.ContainsKey(playerId))
+                totals[playerId] += points;
+            else
+                totals[playerId] = points;
         }
 
-        Console.WriteLine($"Players: {{{string.Join(", ", players)}}}");
+        var top = totals.OrderByDescending(p => p.Value).Take(10);
 
-        var topPlayers = new string[10];
+        Console.WriteLine("\nTop 10 Players by Career Points:");
+        foreach (var p in top)
+        {
+            Console.WriteLine($"{p.Key}: {p.Value}");
+        }
     }
 }
