@@ -16,52 +16,75 @@
 /// </summary>
 public class Maze
 {
+    // Dictionary that holds maze structure:
+    // Key: (x,y) coordinate
+    // Value: array of 4 bools → [left, right, up, down]
     private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
+
+    // Current position in the maze (starting at (1,1) by default)
     private int _currX = 1;
     private int _currY = 1;
 
+    /// <summary>
+    /// Constructor that takes in a dictionary to define the maze layout.
+    /// </summary>
     public Maze(Dictionary<ValueTuple<int, int>, bool[]> mazeMap)
     {
         _mazeMap = mazeMap;
     }
 
-    // TODO Problem 4 - ADD YOUR CODE HERE
     /// <summary>
-    /// Check to see if you can move left.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
+    /// Attempt to move left from the current position.
+    /// If blocked, throw an exception. If allowed, update _currX.
     /// </summary>
     public void MoveLeft()
     {
-        // FILL IN CODE
+        var key = (_currX, _currY);
+        if (!_mazeMap[key][0]) // index 0 → left
+            throw new InvalidOperationException("Can't go that way!");
+        _currX--; // move left decreases X
     }
 
     /// <summary>
-    /// Check to see if you can move right.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
+    /// Attempt to move right from the current position.
+    /// If blocked, throw an exception. If allowed, update _currX.
     /// </summary>
     public void MoveRight()
     {
-        // FILL IN CODE
+        var key = (_currX, _currY);
+        if (!_mazeMap[key][1]) // index 1 → right
+            throw new InvalidOperationException("Can't go that way!");
+        _currX++; // move right increases X
     }
 
     /// <summary>
-    /// Check to see if you can move up.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
+    /// Attempt to move up from the current position.
+    /// If blocked, throw an exception. If allowed, update _currY.
     /// </summary>
     public void MoveUp()
     {
-        // FILL IN CODE
+        var key = (_currX, _currY);
+        if (!_mazeMap[key][2]) // index 2 → up
+            throw new InvalidOperationException("Can't go that way!");
+        _currY--; // move up decreases Y
     }
 
     /// <summary>
-    /// Check to see if you can move down.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
+    /// Attempt to move down from the current position.
+    /// If blocked, throw an exception. If allowed, update _currY.
     /// </summary>
     public void MoveDown()
     {
-        // FILL IN CODE
+        var key = (_currX, _currY);
+        if (!_mazeMap[key][3]) // index 3 → down
+            throw new InvalidOperationException("Can't go that way!");
+        _currY++; // move down increases Y
     }
 
+    /// <summary>
+    /// Get the current status of the player in the maze.
+    /// Returns the current coordinates (x,y).
+    /// </summary>
     public string GetStatus()
     {
         return $"Current location (x={_currX}, y={_currY})";
