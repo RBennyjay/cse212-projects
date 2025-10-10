@@ -29,33 +29,61 @@ public class TakingTurnsQueue
     /// The person will be re-enqueued if they have remaining turns or infinite turns.
     /// Throws an exception if the queue is empty.
     /// </summary>
+    //     public Person GetNextPerson()
+    //     {
+    //         if (_people.IsEmpty())
+    //         {
+    //             throw new InvalidOperationException("No one in the queue.");
+    //         }
+
+    //         Person person = _people.Dequeue();
+
+    //         if (person.Turns > 1)
+    //         {
+    //             // Finite player, more turns left after this one
+    //             person.Turns--;
+    //             _people.Enqueue(person);
+    //         }
+    //         else if (person.Turns == 1)
+    //         {
+    //             // This was their last turn -> do not re-enqueue
+    //             person.Turns--;
+    //         }
+    //         else
+    //         {
+    //             // Infinite turns (0 or negative) -> re-enqueue unchanged
+    //             _people.Enqueue(person);
+    //         }
+
+    //         return person;
+    //     }
+
+    // }
+
     public Person GetNextPerson()
     {
         if (_people.IsEmpty())
-        {
             throw new InvalidOperationException("No one in the queue.");
-        }
 
         Person person = _people.Dequeue();
 
-        if (person.Turns > 1)
+        if (person.Turns > 0)
         {
-            // Finite player, more turns left after this one
+            // Use one turn
             person.Turns--;
-            _people.Enqueue(person);
-        }
-        else if (person.Turns == 1)
-        {
-            // This was their last turn -> do not re-enqueue
-            person.Turns--;
+
+            // If they still have turns, re-enqueue them
+            if (person.Turns > 0)
+            {
+                _people.Enqueue(person);
+            }
         }
         else
         {
-            // Infinite turns (0 or negative) -> re-enqueue unchanged
+            // Infinite turns (0 or negative): always re-enqueue them
             _people.Enqueue(person);
         }
 
         return person;
     }
-
 }
